@@ -1,6 +1,14 @@
+export type Random = {
+  rnd: () => void,
+  range: (n1: number, n2:number) => void,
+  int: (rangeSize: number) => void,
+  choice?: <T>(array: T[]) => T | null,
+  shuffle: (array: number[]) => void,
+  seed: number
+};
+
+
 export function buildRandom(seed=Date.now()) {
-  console.log('SEED=', seed)
-  // https://stackoverflow.com/a/47593316/138256
   function mulberry32() {
     let t = seed += 0x6D2B79F5;
     t = Math.imul(t ^ t >>> 15, t | 1);
@@ -15,11 +23,10 @@ export function buildRandom(seed=Date.now()) {
       return Math.floor(min + (max-min+1) * mulberry32());
     },
     int(rangeSize: number) {
-      "use strict";
       console.assert(rangeSize>0);
       return this.range(0, rangeSize-1);
     },
-    choice(array: number[]) {
+    choice<T>(array: T[]) {
       const length = array.length;
       if (length) {
           return array[this.int(length)];

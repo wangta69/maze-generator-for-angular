@@ -1,5 +1,6 @@
 import {buildEventTarget} from './lib/utils';
-
+import {Model} from './model';
+import {State} from './stateMachine';
 export const
   EVENT_MAZE_SHAPE_SELECTED = 'mazeShapeSelected',
   EVENT_SIZE_PARAMETER_CHANGED = 'mazeSizeParameterChanged',
@@ -24,9 +25,7 @@ export const
 
 import {STATE_INIT, STATE_DISPLAYING, STATE_PLAYING, STATE_MASKING, STATE_DISTANCE_MAPPING, STATE_RUNNING_ALGORITHM} from './stateMachine';
 
-export function buildView(model: any, stateMachine: any) {
-  "use strict";
-
+export function buildView(model: Model, stateMachine: State) {
   const eventTarget = buildEventTarget('view'),
     elCanvas: HTMLCanvasElement = document.getElementById('maze') as HTMLCanvasElement,
     elMazeContainer: HTMLElement | null = document.getElementById('mazeContainer'),
@@ -84,7 +83,7 @@ export function buildView(model: any, stateMachine: any) {
   };
   fitCanvasToContainer();
 
-  function toggleElementVisibility(el: any, display: any) {
+  function toggleElementVisibility(el: any, display: boolean | string) {
     el.style.display = display ? 'block' : 'none';
   }
 
@@ -220,7 +219,7 @@ export function buildView(model: any, stateMachine: any) {
     },
     isMobileLayout,
 
-    updateForNewState(state: any) {
+    updateForNewState(state: string) {
       toggleElementVisibility(elMazeShapeList,      [STATE_INIT].includes(state));
       toggleElementVisibility(elMazeAlgorithmList,  [STATE_INIT].includes(state));
       toggleElementVisibility(elSizeParameterList,  [STATE_INIT].includes(state));
