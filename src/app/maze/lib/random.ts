@@ -7,7 +7,6 @@ export type Random = {
   seed: number
 };
 
-
 export function buildRandom(seed=Date.now()) {
   function mulberry32() {
     let t = seed += 0x6D2B79F5;
@@ -29,7 +28,7 @@ export function buildRandom(seed=Date.now()) {
     choice<T>(array: T[]) {
       const length = array.length;
       if (length) {
-          return array[this.int(length)];
+        return array[this.int(length)];
       }
       return null
     },

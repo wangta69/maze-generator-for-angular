@@ -1,3 +1,14 @@
+
+
+export type MetaData = {
+  setId?: number,
+  width: number,
+  height: number,
+  layers: number,
+  path?: [number, number][],
+  maxDistance?: number,
+
+}
 export type Cell= { //TODO move methods outside so we only have 1 copy of each function
   id: string,
   coords: [number, number],
@@ -6,6 +17,8 @@ export type Cell= { //TODO move methods outside so we only have 1 copy of each f
   isLinkedTo?: any,
   links: any[]
 }
+
+
 
 export type Grid = {
   forEachCell: (fn: any) => void,
@@ -32,7 +45,7 @@ export type Grid = {
   placeExits?: () => void
 }
 
-import {Config} from '../config';
+// import {Config} from '../config';
 import {Maze} from './main';
 import {buildEventTarget} from './utils';
 import {
@@ -88,7 +101,8 @@ function findExitCells(grid: any) {
   }
 }
 
-const exitDirectionOffsets: any = {
+// const exitDirectionOffsets: any = {
+const exitDirectionOffsets: {[key: string]: {x: number, y: number}} = {
   [DIRECTION_NORTH] : {x: 0, y:-1},
   [DIRECTION_SOUTH] : {x: 0, y: 1},
   [DIRECTION_EAST]  : {x: 1, y: 0},
@@ -102,7 +116,8 @@ const exitDirectionOffsets: any = {
 const eventTarget = buildEventTarget('maze');
 
 function buildBaseGrid(config: Maze): Grid {
-  const cells: any = {};
+  // const cells: any = {};
+  const cells: {[key: string]: Cell} = {};
   const {random} = config;
 
   function makeIdFromCoords(coords: number[]) {
@@ -174,7 +189,7 @@ function buildBaseGrid(config: Maze): Grid {
     },
     metadata: config,
     randomCell(fnCriteria = () => true) {
-        return random.choice?.(<string[]>Object.values(cells).filter(fnCriteria));
+        return random.choice?.(<Cell[]>Object.values(cells).filter(fnCriteria));
     },
     addCell(...coords: any) {
       const cell = buildCell(...coords);
@@ -811,7 +826,7 @@ function getAngleFromNorth(origin: number[], point: number[]) {
 
 export function buildHexagonalGrid(config: Maze) {
   const {drawingSurface: defaultDrawingSurface} = config;
-  const grid: any = buildBaseGrid(config);
+  const grid: Grid = buildBaseGrid(config);
 
   const yOffset1 = Math.cos(Math.PI / 3);
   const yOffset2 = 2 - yOffset1;
@@ -850,7 +865,7 @@ export function buildHexagonalGrid(config: Maze) {
     }
     const coords = [x, y];
 
-    if (grid.getCellByCoordinates(coords)) {
+    if (grid.getCellByCoordinates(...coords)) {
       eventTarget.trigger(EVENT_CLICK, {
         coords,
         rawCoords: [event.rawX, event.rawY],
@@ -1173,7 +1188,7 @@ export function buildCircularGrid(config: Maze) {
     return [startAngle, endAngle, innerDistance, outerDistance];
   }
 
-  function thisCell(thisCoords: any) {
+  function thisCell(thisCoords: [number, number]) {
     const LAYER = 0;
     const INDEX = 1;
     const [thisLayer, thisIndex] = thisCoords;
@@ -1187,25 +1202,25 @@ export function buildCircularGrid(config: Maze) {
       hasFiveExits() {
         return ! this.isOnInnermostLayer() && ! this.isOnOutermostLayer() && (cellCounts[thisLayer] < cellCounts[thisLayer + 1]);
       },
-      hasAntiClockwiseOutsideBorderWith(otherCoords: any) {
+      hasAntiClockwiseOutsideBorderWith(otherCoords: [number, number]) {
         return this.hasFiveExits() && thisLayer + 1 === otherCoords[LAYER] && thisIndex * 2 === otherCoords[INDEX];
       },
-      hasClockwiseOutsideBorderWith(otherCoords: any) {
+      hasClockwiseOutsideBorderWith(otherCoords: [number, number]) {
         return this.hasFiveExits() && thisLayer + 1 === otherCoords[LAYER] && thisIndex * 2 + 1=== otherCoords[INDEX];
       },
-      isInSameLayerAs(otherCoords: any) {
+      isInSameLayerAs(otherCoords: [number, number]) {
         return thisLayer === otherCoords[LAYER];
       },
-      isInside(otherCoords: any) {
+      isInside(otherCoords: [number, number]) {
         return thisLayer < otherCoords[LAYER];
       },
-      isOutside(otherCoords: any) {
+      isOutside(otherCoords: [number, number]) {
         return thisLayer > otherCoords[LAYER];
       },
-      isAntiClockwiseFrom(otherCoords: any) {
+      isAntiClockwiseFrom(otherCoords: [number, number]) {
         return this.isInSameLayerAs(otherCoords) && ((otherCoords[INDEX] === thisIndex + 1) || (thisIndex === cellCounts[thisLayer] - 1 && otherCoords[INDEX] === 0));
       },
-      isClockwiseFrom(otherCoords: any) {
+      isClockwiseFrom(otherCoords: [number, number]) {
         return this.isInSameLayerAs(otherCoords) && ((otherCoords[INDEX] === thisIndex - 1) || (otherCoords[INDEX] === cellCounts[thisLayer] - 1 && thisIndex === 0));
       },
       getCoords() {
@@ -1538,7 +1553,7 @@ export function buildCircularGrid(config: Maze) {
     const cellCoords = cell.metadata[METADATA_RAW_COORDS];
     const clickCoords = clickEvent.rawCoords;
         // [startAngle, endAngle, _1, _2] = getCellCoords(...cell.coords),
-    const [startAngle, endAngle, _1, _2] = getCellCoords(...(cell.coords as [any, any]));
+    const [startAngle, endAngle, _1, _2] = getCellCoords(...(cell.coords as [number, number]));
     const coordAngle = midPoint(startAngle, endAngle);
     const hasFiveExits = thisCell(cell.coords).hasFiveExits();
 

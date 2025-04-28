@@ -23,9 +23,9 @@ export function buildStateMachine() {
   const EVENT_STATE_CHANGED = 'stateChanged';
   let state = STATE_INIT;
 
-  function ifStateIsOneOf(...validStates: any) {
+  function ifStateIsOneOf(...validStates: string[]) {
     return {
-      thenChangeTo(newState: any) {
+      thenChangeTo(newState: string) {
         if (validStates.includes(state)) {
           console.debug('State changed to', newState);
           state = newState;

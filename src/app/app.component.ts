@@ -1,7 +1,7 @@
 import { Component,OnInit,AfterViewInit, ViewEncapsulation  } from '@angular/core';
 
 import {buildModel,Model, ExitConfig} from './maze/model';
-import {buildView} from './maze/view';
+import {buildView, View} from './maze/view';
 import {buildMaze} from './maze/lib/main';
 import {buildStateMachine, STATE_INIT, STATE_DISPLAYING, STATE_PLAYING, STATE_MASKING, STATE_DISTANCE_MAPPING, STATE_RUNNING_ALGORITHM, State} from './maze/stateMachine';
 import {shapes} from './maze/lib/shapes';
@@ -35,7 +35,7 @@ import {
 export class AppComponent implements OnInit, AfterViewInit{
   private model!: Model;
   private stateMachine!: State;
-  private view!: any;
+  private view!: View;
 
   constructor() {}
 
@@ -106,7 +106,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     this.view.on(EVENT_CREATE_MASK_BUTTON_CLICKED, () => {
       this.stateMachine.masking();
       this.showEmptyGrid(false);
-      (this.model.mask[this.getModelMaskKey() as string] || []).forEach((maskedCoords: any) => {
+      (this.model.mask[this.getModelMaskKey() as string] || []).forEach((maskedCoords: [number, number]) => {
         const cell = this.model.maze.getCellByCoordinates(maskedCoords);
         cell.metadata[METADATA_MASKED] = true;
       });
@@ -117,7 +117,7 @@ export class AppComponent implements OnInit, AfterViewInit{
       try {
         this.validateMask();
         this.stateMachine.init();
-        const mask: any = this.model.mask[this.getModelMaskKey() as string] = [];
+        const mask: [number, number][] = this.model.mask[this.getModelMaskKey() as string] = [];
         this.model.maze.forEachCell((cell: Cell) => {
           if (cell.metadata[METADATA_MASKED]) {
             mask.push(cell.coords);
@@ -309,8 +309,8 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.model.maze.dispose();
     }
 
-    const grid = Object.assign({'cellShape': this.model.shape}, this.model.size),
-      maze = buildMaze({
+    const grid = Object.assign({'cellShape': this.model.shape}, this.model.size);
+    const maze = buildMaze({
         grid,
         'algorithm':  overrides.algorithm || this.model.algorithm,
         'randomSeed' : this.model.randomSeed,

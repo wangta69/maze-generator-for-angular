@@ -23,6 +23,48 @@ export const
   EVENT_EXITS_SELECTED = 'exitsSelected';
 
 
+export type View = {
+  addShape: (shapeName: string) => void,
+  setShape: (shapeName: string) => void,
+
+  // Size
+  clearSizeParameters: () => void,
+  addSizeParameter: (name: string, minimumValue: number, maximumValue: number) => void,
+  setSizeParameter: (name: string, value: number) => void,
+
+  // Exits
+  addExitConfiguration: (description: string, value: string) => void,
+  setExitConfiguration: (exitConfiguration: string) => void,
+
+  // Algorithm Delay
+  addAlgorithmDelay: (description: string, value: number) => void,
+  setAlgorithmDelay: (algorithmDelay: number) => void,
+
+  // Algorithm
+  clearAlgorithms: () => void,
+  addAlgorithm: (description: string, algorithmId: string) => void,
+  setAlgorithm: (algorithmId: string) => void,
+
+  toggleSolveButtonCaption: (solve: boolean) => void,
+
+  getSeed: () => any,
+
+  getValidSizeParameters: () => any,
+
+  inputErrorMessage: () => string,
+  isMobileLayout: boolean,
+
+  updateForNewState: (state: string) => void,
+
+  updateMaskButtonCaption: (maskAvailable: any) => void,
+
+  showSeedValue: () => void,
+  showInfo: (msg: string) => void,
+  setNavigationInstructions: (instructions: any) => void,
+
+  on: (eventName: any, handler: any) => void,
+}
+
 import {STATE_INIT, STATE_DISPLAYING, STATE_PLAYING, STATE_MASKING, STATE_DISTANCE_MAPPING, STATE_RUNNING_ALGORITHM} from './stateMachine';
 
 export function buildView(model: Model, stateMachine: State) {

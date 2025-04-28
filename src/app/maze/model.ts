@@ -2,6 +2,7 @@ import {Shape} from './config';
 export type ExitConfig = 'vertical' | 'hardest' | 'horizontal' | 'no exits';
 export type Model = {
   shape: Shape,
+  // size: {[key: string]: number},
   size: any,
   mask: any,
   algorithmDelay: number,

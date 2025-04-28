@@ -127,7 +127,7 @@ export const algorithms = {
       'maskable': true,
       'shapes': [SHAPE_SQUARE, SHAPE_TRIANGLE, SHAPE_HEXAGON, SHAPE_CIRCLE]
     },
-    fn: function*(grid: any, config: any) {
+    fn: function*(grid: Grid, config: any) {
       const progress = algorithmProgress(grid);
       let unvisitedCount = grid.cellCount;
       let currentCell!: Cell;
@@ -421,7 +421,7 @@ export const algorithms = {
       'maskable': false,
       'shapes': [SHAPE_SQUARE]
     },
-    fn: function*(grid: any, config: any) {
+    fn: function*(grid: Grid, config: any) {
       const ODDS_OF_MERGE = 2;
       const ODDS_OF_LINK_BELOW = 5;
       const sets: any = {};
@@ -429,7 +429,7 @@ export const algorithms = {
       const {width, height} = grid.metadata;
       let nextSetId = 1;
 
-      function addCellToSet(setId: any, cell: Cell) {
+      function addCellToSet(setId: number, cell: Cell) {
         cell.metadata[METADATA_SET_ID] = setId;
         if (!sets[setId]) {
           sets[setId] = [];
@@ -437,7 +437,7 @@ export const algorithms = {
         sets[setId].push(cell);
       }
 
-      function mergeSets(setId1: any, setId2: any) {
+      function mergeSets(setId1: number, setId2: number) {
         const set1 = sets[setId1];
         const set2 = sets[setId2];
         console.assert(set1.length && set2.length);

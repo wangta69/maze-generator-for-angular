@@ -11,8 +11,8 @@ export function forEachContiguousPair(array: any[], fn:(arg1: number, arg2: numb
 }
 
 export function buildEventTarget(name: string) {
-  const eventTarget = new EventTarget(),
-    handlers: any[] = [];
+  const eventTarget = new EventTarget();
+  const handlers: any[] = [];
 
   return {
     trigger(eventName: string, eventData?: any) {
