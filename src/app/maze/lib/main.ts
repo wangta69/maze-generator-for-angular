@@ -102,8 +102,8 @@ export function buildMaze(config: Config) {
       el: config.element,
       lineWidth: config.lineWidth
     })
-  }),
-      algorithm = algorithms[config.algorithm];
+  });
+  const algorithm = algorithms[config.algorithm];
 
   grid.initialise();
   (config.mask || []).forEach((maskedCoords: [number, number]) => {

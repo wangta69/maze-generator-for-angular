@@ -42,36 +42,36 @@ export function buildStateMachine() {
   }
 
   return {
-      get state() {
-        return state;  
-      },
-      init() {
-        ifStateIsOneOf(STATE_DISPLAYING, STATE_MASKING, STATE_DISTANCE_MAPPING)
-          .thenChangeTo(STATE_INIT);
-      },
-      masking() {
-        ifStateIsOneOf(STATE_INIT, STATE_DISPLAYING)
-          .thenChangeTo(STATE_MASKING);
-      },
-      displaying() {
-        ifStateIsOneOf(STATE_INIT, STATE_MASKING, STATE_PLAYING, STATE_DISTANCE_MAPPING, STATE_RUNNING_ALGORITHM)
-          .thenChangeTo(STATE_DISPLAYING);
-      },
-      distanceMapping() {
-        ifStateIsOneOf(STATE_DISPLAYING)
-          .thenChangeTo(STATE_DISTANCE_MAPPING);
-      },
-      playing() {
-        ifStateIsOneOf(STATE_DISPLAYING)
-          .thenChangeTo(STATE_PLAYING);
-      },
-      runningAlgorithm() {
-        ifStateIsOneOf(STATE_INIT, STATE_DISPLAYING)
-          .thenChangeTo(STATE_RUNNING_ALGORITHM);
-      },
-      onStateChange(handler: any) {
-        eventTarget.on(EVENT_STATE_CHANGED, handler);
-      }
+    get state() {
+      return state;  
+    },
+    init() {
+      ifStateIsOneOf(STATE_DISPLAYING, STATE_MASKING, STATE_DISTANCE_MAPPING)
+        .thenChangeTo(STATE_INIT);
+    },
+    masking() {
+      ifStateIsOneOf(STATE_INIT, STATE_DISPLAYING)
+        .thenChangeTo(STATE_MASKING);
+    },
+    displaying() {
+      ifStateIsOneOf(STATE_INIT, STATE_MASKING, STATE_PLAYING, STATE_DISTANCE_MAPPING, STATE_RUNNING_ALGORITHM)
+        .thenChangeTo(STATE_DISPLAYING);
+    },
+    distanceMapping() {
+      ifStateIsOneOf(STATE_DISPLAYING)
+        .thenChangeTo(STATE_DISTANCE_MAPPING);
+    },
+    playing() {
+      ifStateIsOneOf(STATE_DISPLAYING)
+        .thenChangeTo(STATE_PLAYING);
+    },
+    runningAlgorithm() {
+      ifStateIsOneOf(STATE_INIT, STATE_DISPLAYING)
+        .thenChangeTo(STATE_RUNNING_ALGORITHM);
+    },
+    onStateChange(handler: any) {
+      eventTarget.on(EVENT_STATE_CHANGED, handler);
+    }
   };
 
 }

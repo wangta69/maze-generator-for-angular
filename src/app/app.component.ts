@@ -12,7 +12,7 @@ import {
     EVENT_SAVE_MASK_BUTTON_CLICKED, EVENT_CLEAR_MASK_BUTTON_CLICKED, EVENT_FINISH_RUNNING_BUTTON_CLICKED, EVENT_DELAY_SELECTED,
     EVENT_CHANGE_PARAMS_BUTTON_CLICKED, EVENT_EXITS_SELECTED, EVENT_SOLVE_BUTTON_CLICKED, EVENT_PLAY_BUTTON_CLICKED, EVENT_STOP_BUTTON_CLICKED,
     EVENT_KEY_PRESS, EVENT_DOWNLOAD_CLICKED
-} from './maze/view.js';
+} from './maze/view';
 import {config, Shape} from './maze/config';
 import {algorithms} from './maze/lib/algorithms';
 import {buildRandom} from './maze/lib/random';
@@ -47,8 +47,8 @@ export class AppComponent implements OnInit, AfterViewInit{
 
 
   private init() {
-    this.model = buildModel(),
-    this.stateMachine = <State>buildStateMachine(),
+    this.model = buildModel();
+    this.stateMachine = <State>buildStateMachine();
     this.view = buildView(this.model, this.stateMachine);
 
     this.setupShapeParameter();
@@ -190,7 +190,7 @@ export class AppComponent implements OnInit, AfterViewInit{
       this.stateMachine.displaying();
     });
 
-    this. view.on(EVENT_KEY_PRESS, this.ifStateIs(this.stateMachine, STATE_PLAYING).then((event: any) => {
+    this.view.on(EVENT_KEY_PRESS, this.ifStateIs(this.stateMachine, STATE_PLAYING).then((event: any) => {
       const {keyCode, shift, alt} = event,
           direction = keyCodeToDirection[(keyCode as number)];
 
